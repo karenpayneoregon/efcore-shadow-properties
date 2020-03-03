@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Backend.Context;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using static DemoShadowProperties.Helpers.KarenDialogs;
 
 namespace DemoShadowProperties
 {
@@ -32,6 +33,8 @@ namespace DemoShadowProperties
         {
             InitializeComponent();
             Shown += Contact1Form_Shown;
+
+            dataGridView1.AutoGenerateColumns = false;
         }
 
         private async void Contact1Form_Shown(object sender, EventArgs e)
@@ -43,6 +46,7 @@ namespace DemoShadowProperties
             {
                 CurrentContactButton.Enabled = true;
                 UpdateCurrentContactButton.Enabled = true;
+                DeleteContactButton.Enabled = true;
             }
 
             _bindingListContacts = new BindingList<Contact1>(contacts);
@@ -76,6 +80,7 @@ namespace DemoShadowProperties
 
                 CurrentContactButton.Enabled = true;
                 UpdateCurrentContactButton.Enabled = true;
+                DeleteContactButton.Enabled = true;
             }
             else
             {
@@ -118,6 +123,26 @@ namespace DemoShadowProperties
             var lastUpdated = (DateTime?)_context.Entry(contact).Property("LastUpdated").CurrentValue;
 
             MessageBox.Show($"{contact.FirstName} {contact.LastName}\n{lastUpdated.Value:g} - {lastUser}");
+        }
+
+        private void DeleteContactButton_Click(object sender, EventArgs e)
+        {
+            var contact = _bindingListContacts[dataGridView1.CurrentRow.Index];
+
+            if (Question($"Remove {contact}"))
+            {
+                _context.Entry(contact).State = EntityState.Deleted;
+
+                try
+                {
+                    _context.SaveChanges();
+                    _bindingListContacts.Remove(contact);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Failed to remove contact");
+                }
+            }
         }
     }
 }

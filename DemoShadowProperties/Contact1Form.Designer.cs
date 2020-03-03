@@ -50,6 +50,7 @@
             this.LastUserColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CreatedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CreatedByColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeleteContactButton = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -69,7 +70,7 @@
             // UpdateCurrentContactButton
             // 
             this.UpdateCurrentContactButton.Enabled = false;
-            this.UpdateCurrentContactButton.Location = new System.Drawing.Point(85, 81);
+            this.UpdateCurrentContactButton.Location = new System.Drawing.Point(26, 81);
             this.UpdateCurrentContactButton.Name = "UpdateCurrentContactButton";
             this.UpdateCurrentContactButton.Size = new System.Drawing.Size(173, 23);
             this.UpdateCurrentContactButton.TabIndex = 4;
@@ -102,14 +103,15 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.DeleteContactButton);
             this.groupBox2.Controls.Add(this.UpdateCurrentContactButton);
             this.groupBox2.Controls.Add(this.LastNameEditTextBox);
             this.groupBox2.Controls.Add(this.FirstNameEditTextBox);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(480, 159);
+            this.groupBox2.Location = new System.Drawing.Point(359, 159);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(272, 114);
+            this.groupBox2.Size = new System.Drawing.Size(396, 114);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Edit current contact";
@@ -174,7 +176,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(7, 159);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(272, 114);
+            this.groupBox1.Size = new System.Drawing.Size(274, 114);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add contact";
@@ -253,6 +255,17 @@
             this.CreatedByColumn.Name = "CreatedByColumn";
             this.CreatedByColumn.ReadOnly = true;
             // 
+            // DeleteContactButton
+            // 
+            this.DeleteContactButton.Enabled = false;
+            this.DeleteContactButton.Location = new System.Drawing.Point(206, 81);
+            this.DeleteContactButton.Name = "DeleteContactButton";
+            this.DeleteContactButton.Size = new System.Drawing.Size(173, 23);
+            this.DeleteContactButton.TabIndex = 5;
+            this.DeleteContactButton.Text = "Delete current contact";
+            this.DeleteContactButton.UseVisualStyleBackColor = true;
+            this.DeleteContactButton.Click += new System.EventHandler(this.DeleteContactButton_Click);
+            // 
             // Contact1Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -298,5 +311,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastUserColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn CreatedAtColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn CreatedByColumn;
+        private System.Windows.Forms.Button DeleteContactButton;
     }
 }

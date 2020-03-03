@@ -41,6 +41,7 @@ namespace Backend.Context
             modelBuilder.Entity<Contact1>().Property<string>("LastUser");
             modelBuilder.Entity<Contact1>().Property<DateTime?>("CreatedAt");
             modelBuilder.Entity<Contact1>().Property<string>("CreatedBy");
+            modelBuilder.Entity<Contact1>().Property<bool>("isDeleted");
 
 
             modelBuilder.Entity<Contact>(entity =>
@@ -52,24 +53,45 @@ namespace Backend.Context
                 entity.HasKey(e => e.ContactId);
             });
 
-            OnModelCreatingPartial(modelBuilder);
-        }
+            /*
+             * Setup filter on Contact1 model to show only active records.
+             * Since IsDeleted is not in the model the string name is used.
+             */
+            modelBuilder.Entity<Contact1>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+        
 
+
+
+        OnModelCreatingPartial(modelBuilder);
+        }
+        /// <summary>
+        /// Set shadow properties, soft delete
+        /// </summary>
+        /// <returns></returns>
         public override int SaveChanges()
         {
             ChangeTracker.DetectChanges();
 
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.State != EntityState.Added && entry.State != EntityState.Modified) continue;
 
-                entry.Property("LastUpdated").CurrentValue = DateTime.Now;
-                entry.Property("LastUser").CurrentValue = Environment.UserName;
-
-                if (entry.Entity is Contact1 && entry.State == EntityState.Added)
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
-                    entry.Property("CreatedAt").CurrentValue = DateTime.Now;
-                    entry.Property("CreatedBy").CurrentValue = Environment.UserName;
+                    entry.Property("LastUpdated").CurrentValue = DateTime.Now;
+                    entry.Property("LastUser").CurrentValue = Environment.UserName;
+
+                    if (entry.Entity is Contact1 && entry.State == EntityState.Added)
+                    {
+                        entry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                        entry.Property("CreatedBy").CurrentValue = Environment.UserName;
+                    }
+                }
+                else if (entry.State == EntityState.Deleted)
+                {
+                    // Change state to modified and set delete flag
+                    entry.State = EntityState.Modified;
+                    entry.Property("isDeleted").CurrentValue = true;
+                    Console.WriteLine();
                 }
 
             }

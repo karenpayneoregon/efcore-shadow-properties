@@ -90,7 +90,6 @@ namespace Backend.Models
                 OnPropertyChanged();
             }
         }
-
         #endregion
 
 
