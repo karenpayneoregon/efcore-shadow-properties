@@ -49,6 +49,8 @@ namespace Backend.Models
                 OnPropertyChanged();
             }
         }
+        #region Not needed for shadow properties only for displaying in DataGridView
+
         public DateTime? LastUpdated
         {
             get => _lastUpdated;
@@ -80,7 +82,7 @@ namespace Backend.Models
         }
 
         public string CreatedBy
-        { 
+        {
             get => _createdBy;
             set
             {
@@ -88,6 +90,8 @@ namespace Backend.Models
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
 
         public override string ToString() => $"{FirstName} {LastName}";
