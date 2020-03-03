@@ -121,8 +121,9 @@ namespace DemoShadowProperties
             var contact = _bindingListContacts[dataGridView1.CurrentRow.Index];
             var lastUser = (string)_context.Entry(contact).Property("LastUser").CurrentValue;
             var lastUpdated = (DateTime?)_context.Entry(contact).Property("LastUpdated").CurrentValue;
+            var creationDate = (DateTime?)_context.Entry(contact).Property("CreatedAt").CurrentValue;
 
-            MessageBox.Show($"{contact.FirstName} {contact.LastName}\n{lastUpdated.Value:g} - {lastUser}");
+            MessageBox.Show($"{contact.FirstName} {contact.LastName}\n{lastUpdated.Value:g} - {lastUser}\n{creationDate.Value:G}");
         }
 
         private void DeleteContactButton_Click(object sender, EventArgs e)

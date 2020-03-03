@@ -57,12 +57,12 @@ namespace Backend.Context
              * Setup filter on Contact1 model to show only active records.
              * Since IsDeleted is not in the model the string name is used.
              */
-            modelBuilder.Entity<Contact1>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
-        
+            modelBuilder.Entity<Contact1>()
+                .HasQueryFilter(m => 
+                    EF.Property<bool>(m, "isDeleted") == false);
 
+            OnModelCreatingPartial(modelBuilder);
 
-
-        OnModelCreatingPartial(modelBuilder);
         }
         /// <summary>
         /// Set shadow properties, soft delete
@@ -91,7 +91,6 @@ namespace Backend.Context
                     // Change state to modified and set delete flag
                     entry.State = EntityState.Modified;
                     entry.Property("isDeleted").CurrentValue = true;
-                    Console.WriteLine();
                 }
 
             }
