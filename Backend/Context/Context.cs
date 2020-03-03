@@ -17,6 +17,7 @@ namespace Backend.Context
         }
 
         public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<Contact1> Contacts1 { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,6 +37,21 @@ namespace Backend.Context
             modelBuilder.Entity<Contact>().Property<DateTime?>("LastUpdated");
             modelBuilder.Entity<Contact>().Property<string>("LastUser");
 
+            modelBuilder.Entity<Contact1>().Property<DateTime?>("LastUpdated");
+            modelBuilder.Entity<Contact1>().Property<string>("LastUser");
+            modelBuilder.Entity<Contact1>().Property<DateTime?>("CreatedAt");
+            modelBuilder.Entity<Contact1>().Property<string>("CreatedBy");
+
+
+            modelBuilder.Entity<Contact>(entity =>
+            {
+                entity.HasKey(e => e.ContactId);
+            });
+            modelBuilder.Entity<Contact1>(entity =>
+            {
+                entity.HasKey(e => e.ContactId);
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
@@ -45,12 +61,19 @@ namespace Backend.Context
 
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                if (entry.State != EntityState.Added && entry.State != EntityState.Modified) continue;
+
+                entry.Property("LastUpdated").CurrentValue = DateTime.Now;
+                entry.Property("LastUser").CurrentValue = Environment.UserName;
+
+                if (entry.Entity is Contact1 && entry.State == EntityState.Added)
                 {
-                    entry.Property("LastUpdated").CurrentValue = DateTime.Now;
-                    entry.Property("LastUser").CurrentValue = Environment.UserName;
+                    entry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                    entry.Property("CreatedBy").CurrentValue = Environment.UserName;
                 }
+
             }
+
             return base.SaveChanges();
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

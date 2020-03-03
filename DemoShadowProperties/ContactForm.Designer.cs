@@ -1,6 +1,6 @@
 ﻿namespace DemoShadowProperties
 {
-    partial class Form1
+    partial class ContactForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.IdentifierColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FirstNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -96,9 +96,9 @@
             // LastUpdatedColumn
             // 
             this.LastUpdatedColumn.DataPropertyName = "LastUpdated";
-            dataGridViewCellStyle3.Format = "G";
-            dataGridViewCellStyle3.NullValue = null;
-            this.LastUpdatedColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Format = "G";
+            dataGridViewCellStyle1.NullValue = null;
+            this.LastUpdatedColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.LastUpdatedColumn.HeaderText = "Updated";
             this.LastUpdatedColumn.Name = "LastUpdatedColumn";
             this.LastUpdatedColumn.ReadOnly = true;
@@ -141,7 +141,6 @@
             this.LastNameAddTextBox.Name = "LastNameAddTextBox";
             this.LastNameAddTextBox.Size = new System.Drawing.Size(173, 20);
             this.LastNameAddTextBox.TabIndex = 3;
-            this.LastNameAddTextBox.Text = "Payne";
             // 
             // FirstNameAddTextBox
             // 
@@ -149,7 +148,6 @@
             this.FirstNameAddTextBox.Name = "FirstNameAddTextBox";
             this.FirstNameAddTextBox.Size = new System.Drawing.Size(173, 20);
             this.FirstNameAddTextBox.TabIndex = 2;
-            this.FirstNameAddTextBox.Text = "Karen";
             // 
             // label2
             // 
@@ -237,7 +235,7 @@
             this.CurrentContactButton.UseVisualStyleBackColor = true;
             this.CurrentContactButton.Click += new System.EventHandler(this.CurrentContactButton_Click);
             // 
-            // Form1
+            // ContactForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -247,7 +245,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form1";
+            this.Name = "ContactForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Shadow properties";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

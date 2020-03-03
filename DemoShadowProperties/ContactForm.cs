@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DemoShadowProperties
 {
-    public partial class Form1 : Form
+    public partial class ContactForm : Form
     {
         /// <summary>
         /// Provides immediate updates to the DataGridView
@@ -28,7 +28,7 @@ namespace DemoShadowProperties
         /// </summary>
         private Context _context = new Context();
 
-        public Form1()
+        public ContactForm()
         {
             InitializeComponent();
             Shown += Form1_Shown;
