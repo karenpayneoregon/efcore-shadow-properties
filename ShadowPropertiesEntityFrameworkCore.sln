@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1022
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Class projects", "Class projects", "{03F05D26-8B98-4D95-B187-7D28E020FA85}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework Class projects", "Framework Class projects", "{03F05D26-8B98-4D95-B187-7D28E020FA85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{2C2D1770-5694-4922-BA2F-31AE5B9609BF}"
 EndProject
@@ -13,10 +13,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoShadowProperties", "Dem
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F4046A7-A791-4A83-8112-3B9B2D28541E}"
 	ProjectSection(SolutionItems) = preProject
-		DataScript.sql = DataScript.sql
 		readme.md = readme.md
-		ResetContactsTable.sql = ResetContactsTable.sql
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework windows forms", "Framework windows forms", "{2C4EC1DA-EF05-4F79-ADC7-A934E5480F33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework data scripts", "framework data scripts", "{F1D9B26B-FB0B-4702-AFD1-89242E3BDB9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core projects", "Core projects", "{E6B0C5C6-04B8-48C9-8608-F765A1DE0C62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShadowProperties", "ShadowProperties\ShadowProperties.csproj", "{AA12DE71-9527-40F9-9A85-73D10975CFA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HasQueryFilterRazorApp", "HasQueryFilterRazorApp\HasQueryFilterRazorApp.csproj", "{CF7F5951-8D37-4A15-A861-DB4320AA73CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,13 +40,26 @@ Global
 		{612FC043-60F0-484D-A47A-A55AFA879798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{612FC043-60F0-484D-A47A-A55AFA879798}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{612FC043-60F0-484D-A47A-A55AFA879798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA12DE71-9527-40F9-9A85-73D10975CFA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA12DE71-9527-40F9-9A85-73D10975CFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA12DE71-9527-40F9-9A85-73D10975CFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA12DE71-9527-40F9-9A85-73D10975CFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7F5951-8D37-4A15-A861-DB4320AA73CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7F5951-8D37-4A15-A861-DB4320AA73CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7F5951-8D37-4A15-A861-DB4320AA73CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7F5951-8D37-4A15-A861-DB4320AA73CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{03F05D26-8B98-4D95-B187-7D28E020FA85} = {2C4EC1DA-EF05-4F79-ADC7-A934E5480F33}
 		{2C2D1770-5694-4922-BA2F-31AE5B9609BF} = {03F05D26-8B98-4D95-B187-7D28E020FA85}
+		{91053795-1A96-4D81-863D-7A272FA0A1A2} = {2C4EC1DA-EF05-4F79-ADC7-A934E5480F33}
 		{612FC043-60F0-484D-A47A-A55AFA879798} = {91053795-1A96-4D81-863D-7A272FA0A1A2}
+		{F1D9B26B-FB0B-4702-AFD1-89242E3BDB9B} = {2C4EC1DA-EF05-4F79-ADC7-A934E5480F33}
+		{AA12DE71-9527-40F9-9A85-73D10975CFA4} = {E6B0C5C6-04B8-48C9-8608-F765A1DE0C62}
+		{CF7F5951-8D37-4A15-A861-DB4320AA73CE} = {E6B0C5C6-04B8-48C9-8608-F765A1DE0C62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A4C3A0B-B716-4557-A2BB-CF85C82BC3A3}

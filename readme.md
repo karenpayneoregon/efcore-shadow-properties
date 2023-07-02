@@ -1,41 +1,207 @@
-# Entity Framework shadow properties
+# EF Core Global Query Filters
 
-This repository supports the following [Microsoft TechNet article](https://social.technet.microsoft.com/wiki/contents/articles/53662.entity-framework-core-shadow-properties-c.aspx).
 
+## Learn how to 
+
+- Create [global query filters](https://learn.microsoft.com/en-us/ef/core/querying/filters#disabling-filters) which are LINQ query predicates applied to Entity Types, in this article, your models. A typical example, using soft delete, only show those records which are active which will be gone over in code.
+- Override global query filters [see also](https://learn.microsoft.com/en-us/ef/core/querying/filters#disabling-filters)
+- Override a DbContext SaveChangesAsync and SaveChanges to handle soft deletes.
+
+
+
+
+
+
+## Limitations
+
+Filters can only be defined for the root Entity Type of an inheritance hierarchy.
+
+## Core Projects
+
+- ShadowProperties, class project for data operations
+- HasQueryFilterRazorApp, Razor Pages project which
+    - Presents data
+    - Provides an interface to soft delete records
+    - Provides an interface to un-delete soft deletes.
+
+## Windows forms projects
+
+There are two projects, Backend and DemoShadowProperties. These are from the following Microsoft TechNet article [Entity Framework Core shadow properties (C#)](https://social.technet.microsoft.com/wiki/contents/articles/53662.entity-framework-core-shadow-properties-c.aspx) which were done with .NET Framework 4.7 and have been updated to 4.8.
+
+The Core projects were based off these projects which shows when writing decent code a we have a good start to port to ASP.NET Core and Razor Pages.
+
+## Database
+
+Schema for the table used to demonstrate using global query filters.
+
+![contact table schema](assets/contactTable.png)
+
+### Columns
+
+- **isDeleted** soft delete flag
+- **CreatedBy** user which added the record
+- **CreatedAt** when the record was added date time
+- **LastUser** user to last modify a record
+- **LastUpdated** last updated date time
+
+### SQL to examine data in SSMS
+
+```sql
+SELECT ContactId,
+       FirstName,
+       LastName,
+       LastUser,
+       CreatedBy,
+	   FORMAT(CreatedAt, 'MM/dd/yyyy') AS CreatedAt,
+	   FORMAT(LastUpdated, 'MM/dd/yyyy') AS LastUpdated,
+       IIF(isDeleted = 'TRUE' , 'Y','N') AS Deleted
+FROM dbo.Contact1;
+```
+
+## Setup a global query filter
+
+In the DbContext OnModelCreating method, after the entities have been configured add.
 
 ```csharp
-protected override void OnModelCreating(ModelBuilder modelBuilder)
+modelBuilder.Entity<Contact>()
+    .HasQueryFilter(contact =>
+        EF.Property<bool>(contact, "isDeleted") 
+        == false);
+```
+
+That's it. In the Index page to get contacts.
+
+### Read filtered records
+
+```csharp
+public async Task OnGetAsync()
 {
-    modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
 
-    modelBuilder.Entity<Contact>().Property<DateTime?>("LastUpdated");
-    modelBuilder.Entity<Contact>().Property<string>("LastUser");
-
-    modelBuilder.Entity<Contact1>().Property<DateTime?>("LastUpdated");
-    modelBuilder.Entity<Contact1>().Property<string>("LastUser");
-    modelBuilder.Entity<Contact1>().Property<DateTime?>("CreatedAt");
-    modelBuilder.Entity<Contact1>().Property<string>("CreatedBy");
-    modelBuilder.Entity<Contact1>().Property<bool>("isDeleted");
-
-
-    modelBuilder.Entity<Contact>(entity =>
+    if (_context.Contacts != null)
     {
-        entity.HasKey(e => e.ContactId);
-    });
-    modelBuilder.Entity<Contact1>(entity =>
-    {
-        entity.HasKey(e => e.ContactId);
-    });
-
-    /*
-     * Setup filter on Contact1 model to show only active records.
-     * Since IsDeleted is not in the model the string name is used.
-     */
-    modelBuilder.Entity<Contact1>()
-        .HasQueryFilter(m => 
-            EF.Property<bool>(m, "isDeleted") == false);
-
-    OnModelCreatingPartial(modelBuilder);
-
+        Contacts = await _context.Contacts.ToListAsync();
+    }
 }
 ```
+
+Generated SQL, note the WHERE clause.
+
+```csharp
+SELECT [c].[ContactId], [c].[CreatedAt], [c].[CreatedBy], [c].[FirstName], [c].[LastName], [c].[LastUpdated], [c].[LastUser], [c].[isDeleted]
+FROM [Contact1] AS [c]
+WHERE [c].[isDeleted] = CAST(0 AS bit)
+```
+
+:stop_sign: did you notice in the database the table name is Contact1 but in the above code we are using Contact model. This is done via [Table name annotations](https://learn.microsoft.com/en-us/ef/core/modeling/entity-types?tabs=data-annotations#table-name).
+
+```csharp
+[Table("Contact1")]
+public partial class Contact : INotifyPropertyChanged
+```
+
+### Ignore filters
+
+[IgnoreQueryFilters extension](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entityframeworkqueryableextensions.ignorequeryfilters?view=efcore-7.0) Specifies that the current Entity Framework LINQ query should not have any model-level entity query filters applied.
+
+```csharp
+public async Task OnGetAsync()
+{
+    if (_context.Contacts != null)
+    {
+        Contacts = await _context
+            .Contacts
+            .IgnoreQueryFilters() // IMPORTANT
+            .ToListAsync();
+    }
+}
+```
+
+## Handling soft deletes
+
+Working in DeleteContactPage.
+
+- An id is passed from the index page
+- Find and validate the contact exists still
+- Begin tracking the contact marked as deleted.
+
+```csharp
+public async Task<IActionResult> OnPostAsync(int? id)
+{
+    if (id == null || _context.Contacts == null)
+    {
+        return NotFound();
+    }
+    var contact = await _context.Contacts.FindAsync(id);
+
+    if (contact != null)
+    {
+        Contact = contact;
+        _context.Contacts.Remove(Contact);
+        await _context.SaveChangesAsync();
+    }
+
+    return RedirectToPage("./Index");
+}
+```
+
+Back in the DbContext we override SaveChangesAsync.
+
+```csharp
+public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new ())
+{
+    HandleChanges();
+    return base.SaveChangesAsync(cancellationToken);
+}
+```
+
+**HandleChanges method**
+
+- Traverse entities, if the state is `EntityState.Deleted`, set its state to Modfied followed by setting `isDeleted` to `true`.
+
+```csharp
+private void HandleChanges()
+{
+    foreach (var entry in ChangeTracker.Entries())
+    {
+        // take care of date time created and updated
+        if (entry.State is EntityState.Added or EntityState.Modified)
+        {
+            entry.Property("LastUpdated").CurrentValue = DateTime.Now;
+            entry.Property("LastUser").CurrentValue = Environment.UserName;
+
+            if (entry.Entity is Contact && entry.State == EntityState.Added)
+            {
+                entry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                entry.Property("CreatedBy").CurrentValue = Environment.UserName;
+            }
+        }
+        else if (entry.State == EntityState.Deleted)
+        {
+            // Change state to modified and set delete flag
+            entry.State = EntityState.Modified;
+            entry.Property("isDeleted").CurrentValue = true;
+        }
+    }
+}
+```
+
+
+
+
+## WCAG Accessibility
+
+All pages conform to WCAG AA standard.
+
+Note that the checkbox on the admin page needed aria-label attribute for screen readers to properly identify the checkbox purpose.
+
+## Admin page
+
+This page allows the user to perform deletions and un delete operations which are respected by the global in place.
+
+
+## Soure code
+
+Clone the following GitHub repository
+
+
+
