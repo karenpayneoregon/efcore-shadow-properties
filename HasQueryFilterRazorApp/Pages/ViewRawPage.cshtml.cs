@@ -16,7 +16,7 @@ namespace HasQueryFilterRazorApp.Pages
         [TempData]
         public string StatusMessage { get; set; }
         [BindProperty]
-        public List<Report> Reports { get; set; }
+        public IReadOnlyList<Report> Reports { get; set; }
         public ViewRawPageModel()
         {
         }

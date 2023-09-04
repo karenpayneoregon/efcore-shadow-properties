@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,7 @@ public class DataOperations
     /// <summary>
     /// View for all contacts
     /// </summary>
-    public static async Task<List<Report>> Reports()
+    public static async Task<IReadOnlyList<Report>> Reports()
     {
         string command =
             """
@@ -81,7 +82,7 @@ public class DataOperations
             });
         }
 
-        return list;
+        return list.ToImmutableList();
 
     }
 }

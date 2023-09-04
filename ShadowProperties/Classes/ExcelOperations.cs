@@ -7,7 +7,7 @@ using Color = System.Drawing.Color;
 namespace ShadowProperties.Classes;
 public class ExcelOperations
 {
-    public static DataTable ToDataTable<T>(List<T> sender)
+    public static DataTable ToDataTable<T>(IReadOnlyList<T> sender)
     {
         DataTable table = new();
         using var reader = ObjectReader.Create(sender);
@@ -16,7 +16,7 @@ public class ExcelOperations
         return table;
     }
 
-    public static bool ExportToExcel<T>(List<T> list)
+    public static bool ExportToExcel<T>(IReadOnlyList<T> list)
     {
         DataTable table = ToDataTable<T>(list);
 
