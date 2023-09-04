@@ -3,6 +3,10 @@
 namespace ShadowProperties.Models;
 
 #pragma warning disable CS0169
+/// <summary>
+/// Container for displaying soft deleted records and for
+/// creating an Excel file.
+/// </summary>
 public class Report
 {
     [Display(Name = "Id")]

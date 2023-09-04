@@ -13,6 +13,8 @@ namespace HasQueryFilterRazorApp.Pages
     
     public class ViewRawPageModel : PageModel
     {
+        [TempData]
+        public string StatusMessage { get; set; }
         [BindProperty]
         public List<Report> Reports { get; set; }
         public ViewRawPageModel()
@@ -21,6 +23,25 @@ namespace HasQueryFilterRazorApp.Pages
         public async Task OnGet()
         {
             Reports = await DataOperations.Reports();
+        }
+
+        /// <summary>
+        ///  * Get fresh list of contacts
+        ///  * Crete Excel file with SpreadSheetLight
+        ///  * Setup text for displaying success or failure
+        ///  * Push back to same page were on document ready a dialog is displayed depended on success or failure for creating the excel file
+        /// </summary>
+        public async Task<PageResult> OnPostExportButton()
+        {
+            
+            Reports = await DataOperations.Reports();
+            
+            StatusMessage = ExcelOperations.ExportToExcel(Reports) ? 
+                "Report created <strong>successfully</strong>" : 
+                "<strong>Failed</strong> to create report";
+
+            return Page();
+
         }
     }
 }

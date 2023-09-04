@@ -4,7 +4,7 @@
     ViewData["Title"] = "Report";
 }
 
-
+<link rel="stylesheet" href="~/lib/limonte-sweetalert2/sweetalert2.min.css" />
 
 <h1 class="fs-4 mb-3 bg-light p-2 border">Report</h1>
 
@@ -78,3 +78,25 @@
         }
     </tbody>
 </table>
+
+<div class="row">
+    <form asp-page-handler="ExportButton" method="post">
+        <button class="btn btn-primary">Export to Excel</button>
+    </form>
+</div>
+
+
+<div class="d-none">
+    <input asp-for="StatusMessage" />
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        let statusMessage = $('#StatusMessage').val();
+        if (statusMessage.length > 0) {
+            swal.fire(statusMessage);
+        }
+    });
+
+</script>

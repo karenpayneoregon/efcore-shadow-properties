@@ -6,6 +6,9 @@
 - Create [global query filters](https://learn.microsoft.com/en-us/ef/core/querying/filters#disabling-filters) which are LINQ query predicates applied to Entity Types, in this article, your models. A typical example, using soft delete, only show those records which are active which will be gone over in code.
 - Override global query filters [see also](https://learn.microsoft.com/en-us/ef/core/querying/filters#disabling-filters)
 - Override a DbContext SaveChangesAsync and SaveChanges to handle soft deletes.
+- Create an Excel file using [SpreadSheetLight](https://spreadsheetlight.com/) with [NuGet package](https://www.nuget.org/packages/SpreadsheetLight/3.5.0?_src=template).
+    - I included SpreadSheetLight chm file outside the solution under folder SpreadSheetLightHelp as some may find if hard to get from SpreadSheetLight site.
+- Using [FastMember.NetCore](https://www.nuget.org/packages/FastMember.NetCore/1.1.0?_src=template) to create a DataTable from a generic List for use with creating an Excel file.
 
 
 
