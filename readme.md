@@ -199,9 +199,17 @@ Note that the checkbox on the admin page needed aria-label attribute for screen 
 This page allows the user to perform deletions and un delete operations which are respected by the global in place.
 
 
+
+
 ## Soure code
 
-Clone the following GitHub repository
+Clone the following [GitHub repository](https://github.com/karenpayneoregon/efcore-shadow-properties)
+
+## Next step
+
+Is to work with an Interceptor and [interface](https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/interceptors).
+
+For this see [How to Implement a Soft Delete Strategy with Entity Framework Core](https://blog.jetbrains.com/dotnet/2023/06/14/how-to-implement-a-soft-delete-strategy-with-entity-framework-core/?utm_campaign=rider&utm_content=nonprod&utm_medium=referral&utm_source=twitter). Going this way is a personal choice and in this article moving in this direction will be easy as this code and mine are compatible.
 
 
 
