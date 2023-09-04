@@ -94,8 +94,10 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         let statusMessage = $('#StatusMessage').val();
+        
         if (statusMessage.length > 0) {
             swal.fire(statusMessage);
+            console.log('here');
         }
     });
 

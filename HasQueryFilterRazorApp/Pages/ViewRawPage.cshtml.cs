@@ -22,7 +22,11 @@ namespace HasQueryFilterRazorApp.Pages
         }
         public async Task OnGet()
         {
+            // dirty deeds done dirty cheap
+            StatusMessage = "";
+
             Reports = await DataOperations.Reports();
+
         }
 
         /// <summary>
@@ -35,10 +39,11 @@ namespace HasQueryFilterRazorApp.Pages
         {
             
             Reports = await DataOperations.Reports();
-            
+
             StatusMessage = ExcelOperations.ExportToExcel(Reports) ? 
                 "Report created <strong>successfully</strong>" : 
                 "<strong>Failed</strong> to create report";
+
 
             return Page();
 
