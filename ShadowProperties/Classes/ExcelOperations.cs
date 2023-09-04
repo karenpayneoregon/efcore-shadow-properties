@@ -7,6 +7,14 @@ using Color = System.Drawing.Color;
 namespace ShadowProperties.Classes;
 public class ExcelOperations
 {
+    /// <summary>
+    /// Create a DataTable from <see>
+    ///     <cref>{T}</cref>
+    /// </see>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="sender"></param>
+    /// <returns></returns>
     public static DataTable ToDataTable<T>(IReadOnlyList<T> sender)
     {
         DataTable table = new();
@@ -22,6 +30,7 @@ public class ExcelOperations
 
         try
         {
+            // split column names e.g. FirstName to First Name
             for (int index = 0; index < table.Columns.Count; index++)
             {
                 table.Columns[index].ColumnName = table.Columns[index].ColumnName.SplitCamelCase();
@@ -40,7 +49,11 @@ public class ExcelOperations
              * Import DataTable starting at A1, include column headers
              */
             document.ImportDataTable(1, SLConvert.ToColumnIndex("A"), table, true);
+
+            // provides a meaningful sheetname
             document.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Deleted report for contacts");
+
+            // fpr setting style, auto sizing columns
             var columnCount = table.Columns.Count;
             document.SetCellStyle(1, 1, 1, columnCount, headerStyle);
 
